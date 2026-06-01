@@ -11,9 +11,13 @@
 <h1 align="center">🕵️ Estudo - Decifrador & Utilitários</h1>
 
 <p align="center">
-  <strong>Decifrador de mensagens ocultas em Google Docs</strong> ·
-  <strong>Gerador de Escada Numérica</strong> ·
-  <strong>Auditor de Senhas</strong>
+  <strong>Decifrador de Mensagens</strong> ·
+  <strong>Gerador de Escada</strong> ·
+  <strong>Gerador de Senhas</strong> ·
+  <strong>Validador de CPF</strong> ·
+  <strong>Cifra de César</strong> ·
+  <strong>Conversor de Bases</strong> ·
+  <strong>Analisador de Texto</strong>
 </p>
 
 <p align="center">
@@ -79,12 +83,17 @@ Este projeto nasceu como um laboratório de estudos em Python, combinando **web 
 ### Funcionalidades
 
 | Módulo | Descrição |
-|---|---|
+|---|---|---|
 | **🕵️ Decifrador** | Baixa HTML de um Google Docs publicado, extrai coordenadas (x, y) com caracteres `░` e `█` de tabelas, e reconstrói uma imagem/mensagem em grade 2D |
 | **🪜 Gerador de Escada** | Organiza números em estrutura piramidal (1, 2, 3... por linha) — valida se a quantidade forma um número triangular perfeito |
+| **🔑 Gerador de Senhas** | Gera senhas seguras configuráveis (tamanho, maiúsculas, minúsculas, números, símbolos) |
 | **🔐 Auditor de Senhas** | Calcula entropia e tempo estimado de quebra por força bruta |
-| **📊 Monitoramento** | Exibe uso de CPU, memória e informações da máquina |
-| **🔒 Criptografia** | Protege resultados com AES via `cryptography.fernet` |
+| **🆔 Validador de CPF** | Valida CPF com algoritmo dos dígitos verificadores (aceita formatado ou só números) |
+| **🔡 Cifra de César** | Cifra/decifra textos com deslocamento configurável — criptografia clássica |
+| **🔢 Conversor de Bases** | Converte números entre binário, octal, decimal e hexadecimal |
+| **📊 Analisador de Texto** | Conta palavras, caracteres, frases e exibe frequência de ocorrência |
+| **💻 Monitoramento** | Exibe uso de CPU, memória e informações da máquina |
+| **🔒 Criptografia AES** | Protege resultados com criptografia via `cryptography.fernet` |
 
 ---
 
@@ -120,6 +129,25 @@ docker compose up web
 docker compose run --rm cli
 ```
 
+### CLI interativa
+
+```bash
+python3 -m src.cli
+```
+
+Menu com 8 opções: Decifrador, Escada, Gerar Senha, Validar CPF, Cifra de César,
+Conversor de Bases e Análise de Texto.
+
+### Interface web
+
+```bash
+streamlit run app.py
+# ou
+docker compose up web
+```
+
+Acesse `http://localhost:8501` — 7 abas com todas as ferramentas.
+
 ---
 
 ## 🏗️ Estrutura do Projeto
@@ -131,11 +159,13 @@ estudo/
 │   ├── cli.py            # CLI interativa
 │   ├── decipher.py       # Decifrador de mensagens
 │   ├── staircase.py      # Gerador de escada
+│   ├── tools.py          # Utilitários (senha, CPF, cifra, bases, texto)
 │   └── config.py         # Configurações (senha via env var)
 ├── tests/                # Testes unitários
 │   ├── __init__.py
 │   ├── test_decipher.py
-│   └── test_staircase.py
+│   ├── test_staircase.py
+│   └── test_tools.py
 ├── archive/              # Versões antigas do decifrador
 ├── app.py                # Interface web Streamlit
 ├── Dockerfile            # Build da imagem Docker
@@ -158,14 +188,13 @@ estudo/
 ## 🧪 Testes
 
 ```bash
-pytest
+pytest          # 35 testes
 ```
 
-## ✅ Verificação de qualidade
+## ✅ Cobertura
 
 ```bash
-ruff check src/ tests/
-mypy src/
+pytest --cov=src tests/     # 35 testes, todas as funcoes testadas
 ```
 
 ---
