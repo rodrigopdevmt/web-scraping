@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "estudo-decifrador"
+version = "1.0.0"
+description = "Decifrador de mensagens ocultas em Google Docs + Gerador de Escada Numérica"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Rodrigo Dev MT", email = "developer@rodrigodevmt.com.br"},
+]
+keywords = ["web-scraping", "regex", "google-docs", "staircase", "python"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.10"
+
+[project.urls]
+Homepage = "https://github.com/rodrigopdevmt/estudo"
+Repository = "https://github.com/rodrigopdevmt/estudo"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

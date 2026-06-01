@@ -1,0 +1,22 @@
+# Core
+requests>=2.31.0
+
+# CLI
+colorama>=0.4.6  ; sys_platform == 'win32'
+
+# Streamlit app
+streamlit>=1.28.0
+psutil>=5.9.0
+cryptography>=41.0.0
+
+# Optional - decipher v2
+beautifulsoup4>=4.12.0
+
+# Optional - network scanner (requires root)
+scapy>=2.5.0
+
+# Development
+pytest>=7.4.0
+pytest-cov>=4.1.0
+mypy>=1.7.0
+ruff>=0.1.0
