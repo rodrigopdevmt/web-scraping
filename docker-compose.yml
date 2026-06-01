@@ -1,0 +1,18 @@
+services:
+  web:
+    build: .
+    container_name: estudo-web
+    ports:
+      - "8501:8501"
+    environment:
+      - H_SYSTEM_PASSWORD=${H_SYSTEM_PASSWORD:-admin123}
+    restart: unless-stopped
+
+  cli:
+    build: .
+    container_name: estudo-cli
+    entrypoint: ["python3", "-m", "src.cli"]
+    stdin_open: true
+    tty: true
+    environment:
+      - H_SYSTEM_PASSWORD=${H_SYSTEM_PASSWORD:-admin123}

@@ -3,6 +3,7 @@
   <img src="https://img.shields.io/badge/python-3.10%2B-blue" alt="Python" />
   <img src="https://img.shields.io/github/license/rodrigopdevmt/estudo" alt="License" />
   <img src="https://img.shields.io/badge/contributions-welcome-orange" alt="Contributions" />
+  <img src="https://img.shields.io/badge/docker-ready-2496ED?logo=docker" alt="Docker" />
 </div>
 
 <br />
@@ -89,6 +90,8 @@ Este projeto nasceu como um laboratório de estudos em Python, combinando **web 
 
 ## 🚀 Instalação
 
+### Local
+
 ```bash
 # Clone o repositório
 git clone https://github.com/rodrigopdevmt/estudo.git
@@ -107,18 +110,14 @@ cp .env.example .env
 # Edite .env com sua senha
 ```
 
-## 🎮 Como usar
-
-### CLI interativa
+### Docker (recomendado)
 
 ```bash
-python3 -m src.cli
-```
+# Interface web
+docker compose up web
 
-### Interface web (Streamlit)
-
-```bash
-streamlit run app.py
+# CLI interativa
+docker compose run --rm cli
 ```
 
 ---
@@ -139,11 +138,14 @@ estudo/
 │   └── test_staircase.py
 ├── archive/              # Versões antigas do decifrador
 ├── app.py                # Interface web Streamlit
+├── Dockerfile            # Build da imagem Docker
+├── docker-compose.yml    # Orquestração dos containers
 ├── sistema_consolidado.py # CLI original (legado)
 ├── create_staircase.py   # Algoritmo original (legado)
 ├── requirements.txt
 ├── pyproject.toml
 ├── .env.example
+├── .dockerignore
 ├── .gitignore
 ├── LICENSE
 ├── CONTRIBUTING.md
