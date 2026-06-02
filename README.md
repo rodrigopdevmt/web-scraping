@@ -11,13 +11,16 @@
 <h1 align="center">🕵️ Estudo - Decifrador & Utilitários</h1>
 
 <p align="center">
-  <strong>Decifrador de Mensagens</strong> ·
+  <strong>Decifrador</strong> ·
   <strong>Gerador de Escada</strong> ·
   <strong>Gerador de Senhas</strong> ·
   <strong>Validador de CPF</strong> ·
   <strong>Cifra de César</strong> ·
   <strong>Conversor de Bases</strong> ·
-  <strong>Analisador de Texto</strong>
+  <strong>Analisador de Texto</strong> ·
+  <strong>Algoritmos</strong> ·
+  <strong>Schema Validation</strong> ·
+  <strong>Armazenamento</strong>
 </p>
 
 <p align="center">
@@ -83,7 +86,7 @@ Este projeto nasceu como um laboratório de estudos em Python, combinando **web 
 ### Funcionalidades
 
 | Módulo | Descrição |
-|---|---|---|
+|---|---|
 | **🕵️ Decifrador** | Baixa HTML de um Google Docs publicado, extrai coordenadas (x, y) com caracteres `░` e `█` de tabelas, e reconstrói uma imagem/mensagem em grade 2D |
 | **🪜 Gerador de Escada** | Organiza números em estrutura piramidal (1, 2, 3... por linha) — valida se a quantidade forma um número triangular perfeito |
 | **🔑 Gerador de Senhas** | Gera senhas seguras configuráveis (tamanho, maiúsculas, minúsculas, números, símbolos) |
@@ -92,6 +95,11 @@ Este projeto nasceu como um laboratório de estudos em Python, combinando **web 
 | **🔡 Cifra de César** | Cifra/decifra textos com deslocamento configurável — criptografia clássica |
 | **🔢 Conversor de Bases** | Converte números entre binário, octal, decimal e hexadecimal |
 | **📊 Analisador de Texto** | Conta palavras, caracteres, frases e exibe frequência de ocorrência |
+| **🕷️ Scraper Assíncrono** | Requisições async com `aiohttp` + suporte a sites dinâmicos com `playwright` |
+| **📋 Algoritmos de Listas** | Two pointers, sliding window, two sum, palíndromo, merge sorted, chunked, flatten |
+| **📊 Pandas vs Polars** | Benchmarks comparativos de performance (groupby, filtro, leitura/escrita) |
+| **🔍 Schema Validation** | Validação de dados com `pydantic` (modelos) + `pandera` (DataFrames) |
+| **🗄️ Armazenamento** | CSV, JSON, Parquet, DuckDB, SQLite — importação e consulta |
 | **💻 Monitoramento** | Exibe uso de CPU, memória e informações da máquina |
 | **🔒 Criptografia AES** | Protege resultados com criptografia via `cryptography.fernet` |
 
@@ -160,12 +168,21 @@ estudo/
 │   ├── decipher.py       # Decifrador de mensagens
 │   ├── staircase.py      # Gerador de escada
 │   ├── tools.py          # Utilitários (senha, CPF, cifra, bases, texto)
+│   ├── scraper.py        # Scraping assíncrono (aiohttp + playwright)
+│   ├── algorithms.py     # Algoritmos de listas
+│   ├── benchmarks.py     # Pandas vs Polars benchmarks
+│   ├── validation.py     # Schema validation (pydantic + pandera)
+│   ├── storage.py        # Armazenamento (CSV, JSON, Parquet, DuckDB, SQLite)
 │   └── config.py         # Configurações (senha via env var)
 ├── tests/                # Testes unitários
 │   ├── __init__.py
 │   ├── test_decipher.py
 │   ├── test_staircase.py
-│   └── test_tools.py
+│   ├── test_tools.py
+│   ├── test_algorithms.py
+│   ├── test_validation.py
+│   ├── test_storage.py
+│   └── test_scraper.py
 ├── archive/              # Versões antigas do decifrador
 ├── app.py                # Interface web Streamlit
 ├── Dockerfile            # Build da imagem Docker
@@ -188,13 +205,15 @@ estudo/
 ## 🧪 Testes
 
 ```bash
-pytest          # 35 testes
+pytest          # todos os testes
+pytest -v       # modo verbose com nomes dos testes
 ```
 
 ## ✅ Cobertura
 
 ```bash
-pytest --cov=src tests/     # 35 testes, todas as funcoes testadas
+pip install pytest-cov
+pytest --cov=src tests/
 ```
 
 ---

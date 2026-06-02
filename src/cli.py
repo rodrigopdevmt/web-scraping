@@ -8,99 +8,81 @@ from src.tools import (
     converter_base,
     analisar_frequencia,
 )
+from src.algorithms import remove_duplicates, max_sum_subarray, is_palindrome, merge_sorted, chunked, flatten
+from src.storage import to_csv, to_json, read_csv
 
 
 def main() -> None:
-    print("=" * 40)
-    print("   SISTEMA DE PROCESSAMENTO v2")
-    print("=" * 40)
-    print("1. Decifrar Mensagem (Google Docs)")
-    print("2. Criar Escada (Staircase)")
-    print("3. Gerar Senha Segura")
-    print("4. Validar CPF")
-    print("5. Cifra de Cesar")
-    print("6. Conversor de Bases Numericas")
-    print("7. Analisar Frequencia de Texto")
-    print("0. Sair")
+    print("=" * 50)
+    print("   SISTEMA DE PROCESSAMENTO v3")
+    print("=" * 50)
+    print(" 1. Decifrar Mensagem (Google Docs)")
+    print(" 2. Criar Escada (Staircase)")
+    print(" 3. Gerar Senha Segura")
+    print(" 4. Validar CPF")
+    print(" 5. Cifra de Cesar")
+    print(" 6. Conversor de Bases")
+    print(" 7. Analisar Texto")
+    print("--- Avancado ---")
+    print(" 8. Algoritmos de Listas")
+    print(" 9. Manipular Arquivos (CSV/JSON)")
+    print(" 0. Sair")
 
-    choice = input("\nEscolha uma opcao: ")
+    choice = input("\nEscolha: ")
 
     if choice == "1":
-        url = input("URL do Google Docs (Enter = padrao): ").strip()
-        if not url:
-            url = DEFAULT_URL
-        print("\nProcessando...\n")
+        url = input("URL (Enter = padrao): ").strip() or DEFAULT_URL
+        print()
         result = decipher_secret_message(url)
-        if result:
-            print(result)
-        else:
-            print("Nenhuma mensagem encontrada ou erro ao processar.")
+        print(result or "Nada encontrado.")
 
     elif choice == "2":
-        entrada = input("Numeros separados por espaco: ")
+        entrada = input("Numeros: ")
         try:
             nums = [int(x) for x in entrada.split()]
-            resultado = create_staircase(nums)
-            if resultado:
-                print("\nEscada gerada:")
-                for r in resultado:
-                    print(r)
+            r = create_staircase(nums)
+            if r:
+                for row in r:
+                    print(row)
             else:
-                print("\nNao e possivel criar uma escada perfeita.")
+                print("Invalido.")
         except ValueError:
-            print("\nErro: Digite apenas numeros inteiros.")
+            print("Erro.")
 
     elif choice == "3":
         try:
-            length = int(input("Tamanho da senha (Enter = 16): ") or "16")
-            upper = input("Incluir maiusculas? (s/n): ").lower() == "s"
-            lower = input("Incluir minusculas? (s/n): ").lower() == "s"
-            digits = input("Incluir numeros? (s/n): ").lower() == "s"
-            sym = input("Incluir simbolos? (s/n): ").lower() == "s"
-            if not any([upper, lower, digits, sym]):
-                print("\nSelecione ao menos um tipo de caractere.")
-                return
-            senha = gerar_senha(length, upper, lower, digits, sym)
-            print(f"\nSenha gerada: {senha}")
+            length = int(input("Tamanho (16): ") or "16")
+            senha = gerar_senha(length)
+            print(f"Senha: {senha}")
         except ValueError:
-            print("\nErro: Tamanho invalido.")
+            print("Erro.")
 
     elif choice == "4":
-        cpf = input("Digite o CPF: ")
-        if validar_cpf(cpf):
-            print("\nCPF valido!")
-        else:
-            print("\nCPF invalido.")
+        cpf = input("CPF: ")
+        print("Valido!" if validar_cpf(cpf) else "Invalido.")
 
     elif choice == "5":
         texto = input("Texto: ")
         try:
             shift = int(input("Deslocamento: "))
         except ValueError:
-            print("\nErro: Deslocamento invalido.")
+            print("Erro.")
             return
         op = input("Cifrar ou Decifrar? (c/d): ").lower()
-        decrypt = op == "d"
-        resultado = cifra_cesar(texto, shift, decrypt)
-        print(f"\nResultado: {resultado}")
+        print(cifra_cesar(texto, shift, op == "d"))
 
     elif choice == "6":
         value = input("Valor: ")
         try:
-            from_b = int(input("Base de origem (2, 8, 10, 16): "))
-            to_b = int(input("Base de destino (2, 8, 10, 16): "))
-        except ValueError:
-            print("\nErro: Base invalida.")
-            return
-        try:
-            resultado = converter_base(value, from_b, to_b)
-            print(f"\nResultado: {resultado}")
+            fb = int(input("Base origem (2/8/10/16): "))
+            tb = int(input("Base destino (2/8/10/16): "))
+            print(converter_base(value, fb, tb))
         except (ValueError, IndexError):
-            print("\nErro: Valor invalido para a base informada.")
+            print("Valor invalido para a base.")
 
     elif choice == "7":
-        print("Digite o texto (linha em branco para finalizar):")
-        lines: list[str] = []
+        print("Texto (Enter duas vezes para finalizar):")
+        lines = []
         while True:
             line = input()
             if not line:
@@ -108,28 +90,79 @@ def main() -> None:
             lines.append(line)
         texto = "\n".join(lines)
         if not texto.strip():
-            print("\nTexto vazio.")
             return
-        result = analisar_frequencia(texto)
-        print(f"\nTotal de palavras: {result['total_palavras']}")
-        print(f"Palavras unicas: {result['palavras_unicas']}")
-        print(f"Total de frases: {result['total_frases']}")
-        print(f"Total de caracteres: {result['total_caracteres']}")
-        print("\nPalavras mais frequentes:")
-        for palavra, count in result["palavras_topo"]:
-            print(f"  {palavra}: {count}x")
-        print("\nCaracteres mais frequentes:")
-        for char, count in result["caracteres_topo"]:
-            print(f"  '{char}': {count}x")
+        r = analisar_frequencia(texto)
+        print(f"Palavras: {r['total_palavras']}, Unicas: {r['palavras_unicas']}")
+        for p, c in r["palavras_topo"]:
+            print(f"  {p}: {c}x")
+
+    elif choice == "8":
+        print("--- Algoritmos de Listas ---")
+        print("1. Remover duplicatas")
+        print("2. Max sum subarray (janela deslizante)")
+        print("3. Verificar palindromo")
+        print("4. Mesclar arrays ordenados")
+        print("5. Dividir em chunks")
+        print("6. Achatar lista aninhada")
+        opt = input("\nEscolha: ")
+
+        if opt == "1":
+            nums = [int(x) for x in input("Numeros: ").split()]
+            k = remove_duplicates(nums)
+            print(f"Resultado: {nums[:k]} ({k} elementos)")
+        elif opt == "2":
+            nums = [int(x) for x in input("Numeros: ").split()]
+            k = int(input("Tamanho da janela: "))
+            r = max_sum_subarray(nums, k)
+            print(f"Soma maxima: {r}")
+        elif opt == "3":
+            s = input("Texto: ")
+            print("Palindromo!" if is_palindrome(s) else "Nao e palindromo.")
+        elif opt == "4":
+            a = [int(x) for x in input("Array A: ").split()]
+            b = [int(x) for x in input("Array B: ").split()]
+            print(f"Mesclado: {merge_sorted(a, b)}")
+        elif opt == "5":
+            nums = [int(x) for x in input("Numeros: ").split()]
+            size = int(input("Tamanho do chunk: "))
+            print(list(chunked(nums, size)))
+        elif opt == "6":
+            print("Exemplo: [1, [2, [3, 4]], 5]")
+            nested = [[1, [2, [3, 4]], 5]]
+            print(f"Achatado: {flatten(nested)}")
+
+    elif choice == "9":
+        print("--- Manipular Arquivos ---")
+        print("1. Criar CSV")
+        print("2. Criar JSON")
+        print("3. Ler CSV")
+        opt = input("\nEscolha: ")
+        if opt in ("1", "2"):
+            dados = []
+            print("Digite nome,valor (linha em branco para finalizar):")
+            while True:
+                linha = input()
+                if not linha:
+                    break
+                nome, valor = linha.split(",")
+                dados.append({"nome": nome.strip(), "valor": valor.strip()})
+            if opt == "1":
+                path = to_csv(dados)
+                print(f"CSV salvo: {path}")
+            else:
+                path = to_json(dados)
+                print(f"JSON salvo: {path}")
+        elif opt == "3":
+            path = input("Caminho do CSV: ")
+            dados = read_csv(path)
+            for row in dados:
+                print(row)
 
     elif choice == "0":
-        print("Saindo...")
         sys.exit(0)
-    else:
-        print("Opcao invalida.")
 
 
 if __name__ == "__main__":
     while True:
         main()
-        input("\nPressione Enter para continuar...")
+        input("\nEnter para continuar...")
